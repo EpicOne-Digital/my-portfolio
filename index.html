@@ -30,39 +30,37 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
         }
-        .gallery img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            transition: transform 0.3s ease-in-out;
-        }
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
         .portfolio-item {
             position: relative;
             overflow: hidden;
             border-radius: 10px;
         }
-        .portfolio-item:hover .overlay {
-            opacity: 1;
+
+        /* Styling for Before/After Effect */
+        .before-after-wrapper {
+            position: relative;
+            width: 100%;
+            height: auto;
         }
-        .overlay {
+        .before-after-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .before-after-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            opacity: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            transition: opacity 0.3s ease-in-out;
+            width: 50%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            cursor: ew-resize;
+            transition: width 0.3s ease;
         }
+        .before-after-wrapper:hover .before-after-overlay {
+            width: 100%;
+        }
+
         footer {
             background-color: #333;
             color: white;
@@ -71,30 +69,6 @@
             position: fixed;
             bottom: 0;
             width: 100%;
-        }
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            color: white;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -107,36 +81,33 @@
 <div class="container">
     <div class="gallery">
         <div class="portfolio-item">
-            <img src="image1.png" alt="Retouched Image 1" onclick="openLightbox('image1.png)">
-            <div class="overlay">Before & After</div>
+            <!-- Before and After Image -->
+            <div class="before-after-wrapper">
+                <img src="image1.png" alt="Before Image 1" class="before-image">
+                <img src="image1_after.png" alt="After Image 1" class="after-image">
+                <div class="before-after-overlay"></div>
+            </div>
         </div>
-        <div class="portfolio-item">
-            <img src="image2.png" alt="Retouched Image 2" onclick="openLightbox('image2.png)">
-            <div class="overlay">Before & After</div>
-        </div>
-        <div class="portfolio-item">
-            <img src="image3.png" alt="Retouched Image 3" onclick="openLightbox('image3.png)">
-            <div class="overlay">Before & After</div>
-        </div>
-       <div class="portfolio-item">
-            <img src="image4.png" alt="Retouched Image 4" onclick="openLightbox('image4.png)">
-            <div class="overlay">Before & After</div>
-        </div>
-<div class="portfolio-item">
-            <img src="image5.png" alt="Retouched Image 5" onclick="openLightbox('image5.png)">
-            <div class="overlay">Before & After</div>
-        </div>
-<div class="portfolio-item">
-            <img src="image6.png" alt="Retouched Image 6" onclick="openLightbox('image6.png)">
-            <div class="overlay">Before & After</div>
-        </div>
- <!-- Add more images as needed -->
-    </div>
-</div>
 
-<div class="lightbox" id="lightbox">
-    <span class="lightbox-close" onclick="closeLightbox()">×</span>
-    <img id="lightbox-img" src="" alt="Lightbox Image">
+        <div class="portfolio-item">
+            <!-- Before and After Image -->
+            <div class="before-after-wrapper">
+                <img src="image2.png" alt="Before Image 2" class="before-image">
+                <img src="image2_after.png" alt="After Image 2" class="after-image">
+                <div class="before-after-overlay"></div>
+            </div>
+        </div>
+
+        <div class="portfolio-item">
+            <!-- Before and After Image -->
+            <div class="before-after-wrapper">
+                <img src="image3.png" alt="Before Image 3" class="before-image">
+                <img src="image3_after.png" alt="After Image 3" class="after-image">
+                <div class="before-after-overlay"></div>
+            </div>
+        </div>
+        <!-- Add more images as needed -->
+    </div>
 </div>
 
 <footer>
@@ -144,14 +115,17 @@
 </footer>
 
 <script>
-    function openLightbox(imageSrc) {
-        document.getElementById('lightbox-img').src = imageSrc;
-        document.getElementById('lightbox').style.display = 'flex';
-    }
+    // JavaScript to control the before and after effect on hover
+    const overlays = document.querySelectorAll('.before-after-overlay');
 
-    function closeLightbox() {
-        document.getElementById('lightbox').style.display = 'none';
-    }
+    overlays.forEach(overlay => {
+        overlay.addEventListener('mousemove', (e) => {
+            const wrapper = e.target.closest('.before-after-wrapper');
+            const rect = wrapper.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left; // Get the mouse position relative to the container
+            overlay.style.width = `${mouseX}px`; // Adjust the width of the overlay based on the mouse position
+        });
+    });
 </script>
 
 </body>
