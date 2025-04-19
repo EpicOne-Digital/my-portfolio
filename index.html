@@ -58,36 +58,30 @@
             object-fit: cover;
         }
 
-        /* The Slider */
+        /* The Slider - Circle with arrows */
         .slider {
             position: absolute;
             top: 0;
             left: 50%; /* Initially position the slider at the center */
             z-index: 10;
-            width: 4px; /* Thinner Slider */
-            height: 100%;
+            width: 40px; /* Circle width */
+            height: 40px; /* Circle height */
             background: white;
             cursor: ew-resize;
-            border: 1px solid #333; /* Simple vertical dividing line */
+            border-radius: 50%; /* Circle shape */
+            border: 2px solid #333; /* Circle border */
+            display: flex;
+            justify-content: space-between; /* Space the arrows inside the circle */
+            align-items: center;
+            padding: 0 5px; /* Padding to position the arrows inside the circle */
         }
 
-        /* Arrows inside the slider (circle with arrows) */
         .slider::before,
         .slider::after {
             content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
             font-size: 20px;
             color: black;
-            background-color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid #333; /* Circle border */
+            background-color: transparent;
         }
 
         .slider::before {
