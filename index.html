@@ -41,106 +41,100 @@
             border-radius: 10px;
         }
 
-        /* Before and After Slider Styling */
-      html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Adjust the height as needed */
+            overflow: hidden;
+        }
 
-@mixin center() {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+        .slider-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-body {
-  margin: 0;
-  height: 100vh;
-  @include center;
-}
+        /* Range Input Slider Styling */
+        .slider {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(242, 242, 242, 0.3);
+            outline: none;
+            margin: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
 
-.container {
-  position: relative;
-  width: 900px;
-  height: 600px;
-  border: 2px solid white;
-  .img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: 900px 100%;
-  }
-  .background-img {
-    background-image: url('https://i.imgur.com/s08MkXC.jpg');
-  }
-  .foreground-img {
-    background-image: url('https://i.imgur.com/PfIWek4.jpg');
-    width: 50%;
-  }
-  
-  .slider {
-    position: absolute;
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 100%;
-    background: rgba(#f2f2f2, .3);
-    outline: none;
-    margin: 0;
-    transition: all .2s;
-    @include center;
-    &:hover {
-      background: rgba(#f2f2f2, .1);
-    }
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 6px;
-      height: 600px;
-      background: white;
-      cursor: pointer;
-    }
-    &::-moz-range-thumb {
-      width: 6px;
-      height: 600px;
-      background: white;
-      cursor: pointer;
-    }
-  }
-  
-  .slider-button {
-    $size: 30px;
-    pointer-events: none;
-    position: absolute;
-    width: $size;
-    height: $size;
-    border-radius: 50%;
-    background-color: white;
-    left: calc(50% - 18px);
-    top: calc(50% - 18px);
-    @include center;
-    
-    @mixin arrow-helper() {
-      content: '';
-      padding: 3px;
-      display: inline-block;
-      border: solid #5D5D5D;
-      border-width: 0 2px 2px 0;
-    }
-    &:after {
-      @include arrow-helper();
-      transform: rotate(-45deg);
-    }
-    &:before {
-      @include arrow-helper();
-      transform: rotate(135deg);
-    }
-  }
-}
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider::-webkit-slider-thumb::before {
+            content: "<";
+            font-size: 16px;
+            color: black;
+            position: absolute;
+            left: 10px;
+        }
+
+        .slider::-webkit-slider-thumb::after {
+            content: ">";
+            font-size: 16px;
+            color: black;
+            position: absolute;
+            right: 10px;
+        }
+
+        /* For Firefox */
+        .slider::-moz-range-thumb {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider::-moz-range-thumb::before {
+            content: "<";
+            font-size: 16px;
+            color: black;
+        }
+
+        .slider::-moz-range-thumb::after {
+            content: ">";
+            font-size: 16px;
+            color: black;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -156,10 +150,7 @@ body {
             <div class="slider-container">
                 <img src="image1.png" alt="Before Image 1" class="before">
                 <img src="image1_after.png" alt="After Image 1" class="after">
-                <div class="slider">
-                    <div class="arrow arrow-left">&lt;</div> <!-- Left arrow -->
-                    <div class="arrow arrow-right">&gt;</div> <!-- Right arrow -->
-                </div>
+                <input type="range" class="slider">
             </div>
         </div>
 
@@ -168,10 +159,7 @@ body {
             <div class="slider-container">
                 <img src="image2.png" alt="Before Image 2" class="before">
                 <img src="image2_after.png" alt="After Image 2" class="after">
-                <div class="slider">
-                    <div class="arrow arrow-left">&lt;</div> <!-- Left arrow -->
-                    <div class="arrow arrow-right">&gt;</div> <!-- Right arrow -->
-                </div>
+                <input type="range" class="slider">
             </div>
         </div>
 
@@ -180,10 +168,7 @@ body {
             <div class="slider-container">
                 <img src="image3.png" alt="Before Image 3" class="before">
                 <img src="image3_after.png" alt="After Image 3" class="after">
-                <div class="slider">
-                    <div class="arrow arrow-left">&lt;</div> <!-- Left arrow -->
-                    <div class="arrow arrow-right">&gt;</div> <!-- Right arrow -->
-                </div>
+                <input type="range" class="slider">
             </div>
         </div>
     </div>
@@ -201,39 +186,15 @@ body {
         const container = containers[index];
         const beforeImage = container.querySelector('.before');
         const afterImage = container.querySelector('.after');
-        let isDragging = false;
 
-        // Function to update the position of the slider and adjust the "after" image
-        const updateSlider = (e) => {
-            const rect = container.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const width = Math.min(Math.max(offsetX, 0), rect.width); // Constrain within container width
-            slider.style.left = `${width}px`;
-
-            // Adjust the clip-path of the "after" image
+        slider.addEventListener('input', () => {
+            const value = slider.value;
+            const width = (value / slider.max) * container.offsetWidth; // Calculate width based on input value
             afterImage.style.clipPath = `inset(0 0 0 ${width}px)`; // Clip "after" image to reveal it
-        };
-
-        slider.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            document.body.style.cursor = 'ew-resize'; // Change cursor to indicate drag
         });
 
-        window.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                updateSlider(e);
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            document.body.style.cursor = 'default'; // Reset cursor
-        });
-
-        // Initialize the position of the slider at the center
-        const initPosition = container.offsetWidth / 2;
-        slider.style.left = `${initPosition}px`;
-        afterImage.style.clipPath = `inset(0 0 0 ${initPosition}px)`;
+        // Set initial position of the slider
+        slider.value = slider.max / 2;
     });
 </script>
 
