@@ -64,7 +64,7 @@
             top: 0;
             left: 50%; /* Initially position the slider at the center */
             z-index: 10;
-            width: 20px; /* Thinner Slider */
+            width: 12px; /* Thinner Slider */
             height: 100%;
             background: white;
             cursor: ew-resize;
@@ -92,11 +92,11 @@
         }
 
         .slider::before {
-            content: '\2190'; /* Left arrow */
+            content: '\003C'; /* Left arrow '<' */
         }
 
         .slider::after {
-            content: '\2192'; /* Right arrow */
+            content: '\003E'; /* Right arrow '>' */
         }
 
         .slider-container .after {
