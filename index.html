@@ -11,15 +11,18 @@
             padding: 0;
             background-color: #f4f4f4;
         }
+
         header {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 20px 0;
         }
+
         header h1 {
             margin: 0;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -38,41 +41,34 @@
             border-radius: 10px;
         }
 
-        /* Style for before and after slider */
-        .slider-container {
+        /* Before and After Slider Styling */
+        .before-after-wrapper {
             position: relative;
             width: 100%;
             height: 400px; /* Adjust the height as needed */
             overflow: hidden;
         }
 
-        .slider-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .before-after-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: 0.3s ease;
+            display: block;
         }
 
-        .slider-overlay {
+        .slider {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 50%;
+            left: 50%;
+            z-index: 10;
+            width: 4px; /* Slider width */
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: #333;
             cursor: ew-resize;
-            transition: width 0.3s ease;
         }
 
-        .slider-container:hover .slider-overlay {
-            width: 100%;
-        }
-
-        .slider-overlay:active {
-            cursor: grabbing;
+        .slider:hover {
+            background: #000;
         }
 
         footer {
@@ -96,28 +92,28 @@
     <div class="gallery">
         <div class="portfolio-item">
             <!-- Before and After Image Slider -->
-            <div class="slider-container">
+            <div class="before-after-wrapper">
                 <img src="image1.png" alt="Before Image 1" class="before-image">
                 <img src="image1_after.png" alt="After Image 1" class="after-image">
-                <div class="slider-overlay"></div>
+                <div class="slider"></div>
             </div>
         </div>
 
         <div class="portfolio-item">
             <!-- Before and After Image Slider -->
-            <div class="slider-container">
+            <div class="before-after-wrapper">
                 <img src="image2.png" alt="Before Image 2" class="before-image">
                 <img src="image2_after.png" alt="After Image 2" class="after-image">
-                <div class="slider-overlay"></div>
+                <div class="slider"></div>
             </div>
         </div>
 
         <div class="portfolio-item">
             <!-- Before and After Image Slider -->
-            <div class="slider-container">
+            <div class="before-after-wrapper">
                 <img src="image3.png" alt="Before Image 3" class="before-image">
                 <img src="image3_after.png" alt="After Image 3" class="after-image">
-                <div class="slider-overlay"></div>
+                <div class="slider"></div>
             </div>
         </div>
         <!-- Add more images as needed -->
@@ -129,32 +125,44 @@
 </footer>
 
 <script>
-    // JavaScript to control the slider functionality
-    const sliders = document.querySelectorAll('.slider-overlay');
+    // JavaScript for draggable slider functionality
+    const sliders = document.querySelectorAll('.slider');
 
     sliders.forEach(slider => {
+        let isDragging = false;
+        let startX = 0;
+
+        const updateSlider = (e) => {
+            const rect = slider.closest('.before-after-wrapper').getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const width = Math.min(Math.max(offsetX, 0), rect.width);
+            slider.style.left = `${width}px`;
+
+            // Adjust the overlay image to show the correct "before" and "after" comparison
+            const beforeImage = slider.previousElementSibling;
+            const afterImage = beforeImage.nextElementSibling;
+            afterImage.style.clipPath = `inset(0 0 0 ${width}px)`;
+        };
+
         slider.addEventListener('mousedown', (e) => {
-            const container = e.target.closest('.slider-container');
-            const rect = container.getBoundingClientRect();
-            const startX = e.clientX;
-
-            // To keep the slider moving within the bounds
-            const moveSlider = (moveEvent) => {
-                const newX = moveEvent.clientX;
-                const deltaX = newX - startX;
-                const newWidth = Math.min(Math.max(deltaX, 0), rect.width); // constrain to width
-                slider.style.width = `${(newWidth / rect.width) * 100}%`;
-            };
-
-            // Stop moving the slider when the mouse is released
-            const stopSlider = () => {
-                window.removeEventListener('mousemove', moveSlider);
-                window.removeEventListener('mouseup', stopSlider);
-            };
-
-            window.addEventListener('mousemove', moveSlider);
-            window.addEventListener('mouseup', stopSlider);
+            isDragging = true;
+            startX = e.clientX;
+            document.body.style.cursor = 'ew-resize';
         });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updateSlider(e);
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.cursor = 'default';
+        });
+
+        // Initialize position of slider
+        updateSlider({ clientX: startX });
     });
 </script>
 
