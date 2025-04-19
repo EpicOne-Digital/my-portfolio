@@ -56,10 +56,11 @@
             display: block;
         }
 
+        /* Slider */
         .slider {
             position: absolute;
             top: 0;
-            left: 50%;
+            left: 50%; /* Initially position the slider at the center */
             z-index: 10;
             width: 4px; /* Slider width */
             height: 100%;
@@ -132,22 +133,24 @@
         let isDragging = false;
         let startX = 0;
 
+        // Function to update the position of the slider and adjust the "after" image
         const updateSlider = (e) => {
             const rect = slider.closest('.before-after-wrapper').getBoundingClientRect();
             const offsetX = e.clientX - rect.left;
-            const width = Math.min(Math.max(offsetX, 0), rect.width);
+            const width = Math.min(Math.max(offsetX, 0), rect.width); // Constrain within container width
             slider.style.left = `${width}px`;
 
             // Adjust the overlay image to show the correct "before" and "after" comparison
             const beforeImage = slider.previousElementSibling;
             const afterImage = beforeImage.nextElementSibling;
-            afterImage.style.clipPath = `inset(0 0 0 ${width}px)`;
+            afterImage.style.clipPath = `inset(0 0 0 ${width}px)`; // Clip "after" image to reveal it
         };
 
         slider.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX;
-            document.body.style.cursor = 'ew-resize';
+            document.body.style.cursor = 'ew-resize'; // Change cursor to indicate drag
+            console.log('mousedown event fired'); // Debugging log
         });
 
         window.addEventListener('mousemove', (e) => {
@@ -158,10 +161,11 @@
 
         window.addEventListener('mouseup', () => {
             isDragging = false;
-            document.body.style.cursor = 'default';
+            document.body.style.cursor = 'default'; // Reset cursor
+            console.log('mouseup event fired'); // Debugging log
         });
 
-        // Initialize position of slider
+        // Initialize position of slider at the center
         updateSlider({ clientX: startX });
     });
 </script>
