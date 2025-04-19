@@ -62,12 +62,34 @@
         .slider {
             position: absolute;
             top: 0;
-            left: 50%;
-            width: 10px; /* Slider width */
-            height: 100%;
-            background: #333;
-            cursor: ew-resize;
+            left: 50%; /* Initially position the slider at the center */
             z-index: 10;
+            width: 30px; /* Slider width */
+            height: 100%;
+            background: white;
+            cursor: ew-resize;
+            border: 2px solid #ccc; /* Border for better visibility */
+        }
+
+        /* Arrow styles inside the slider */
+        .slider::before {
+            content: '\2190'; /* Left arrow */
+            font-size: 20px;
+            color: black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .slider::after {
+            content: '\2192'; /* Right arrow */
+            font-size: 20px;
+            color: black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(50%, -50%);
         }
 
         .slider-container .after {
@@ -136,29 +158,31 @@
         const afterImage = container.querySelector('.after');
         let isDragging = false;
 
-        // Mouse down event to start dragging
+        // Function to update the position of the slider and adjust the "after" image
+        const updateSlider = (e) => {
+            const rect = container.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const width = Math.min(Math.max(offsetX, 0), rect.width); // Constrain within container width
+            slider.style.left = `${width}px`;
+
+            // Adjust the clip-path of the "after" image
+            afterImage.style.clipPath = `inset(0 0 0 ${width}px)`; // Clip "after" image to reveal it
+        };
+
         slider.addEventListener('mousedown', (e) => {
             isDragging = true;
-            document.body.style.cursor = 'ew-resize';
+            document.body.style.cursor = 'ew-resize'; // Change cursor to indicate drag
         });
 
-        // Mouse move event to drag the slider
         window.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                const rect = container.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const width = Math.min(Math.max(offsetX, 0), rect.width);
-                slider.style.left = `${width}px`;
-
-                // Adjust the clip-path of the "after" image
-                afterImage.style.clipPath = `inset(0 0 0 ${width}px)`;
+                updateSlider(e);
             }
         });
 
-        // Mouse up event to stop dragging
         window.addEventListener('mouseup', () => {
             isDragging = false;
-            document.body.style.cursor = 'default';
+            document.body.style.cursor = 'default'; // Reset cursor
         });
 
         // Initialize the position of the slider at the center
